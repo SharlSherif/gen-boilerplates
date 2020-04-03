@@ -1,0 +1,8 @@
+url = f'https://jsonplaceholder.typicode.com/todos/1'
+response = req.get(url).json()
+print(response)
+
+# if html
+    # html = response.content.decode("utf-8")
+    # document = BeautifulSoup(html, features="html.parser")
+    # print(document)

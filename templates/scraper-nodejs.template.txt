@@ -1,0 +1,67 @@
+(async () => {
+    let site = 'https://google.com'
+    const browser = await puppeteer.launch({
+        headless: false,
+        args: [  '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--disable-gpu',
+        '--window-size=1920x1080',
+        ],
+    });
+    const page = await browser.newPage();
+    page.setViewport({ width: 1280, height: 926 });
+    // await Intercept(page)
+    await page.goto(site, { timeout: 0, waitUntil: "networkidle0" });
+})();
+
+async function Intercept(page) {
+    await page.setRequestInterception(true);
+    page.on('request', request => {
+        const requestUrl = request._url.split('?')[0].split('#')[0];
+        if (
+            blockedResourceTypes.indexOf(request.resourceType()) !== -1 ||
+            skippedResources.some(resource => requestUrl.indexOf(resource) !== -1)
+        ) {
+            request.abort();
+        } else {
+            request.continue();
+        }
+    })
+    return page;
+}
+const blockedResourceTypes = [
+    'image',
+    'media',
+    'font',
+    'css',
+    'stylesheet',
+    'texttrack',
+    'object',
+    'beacon',
+    'csp_report',
+    'imageset',
+];
+
+const skippedResources = [
+    'quantserve',
+    'adzerk',
+    'doubleclick',
+    'adition',
+    'exelator',
+    'sharethrough',
+    'cdn.api.twitter',
+    'google-analytics',
+    'googletagmanager',
+    'google',
+    'fontawesome',
+    'facebook',
+    'analytics',
+    'optimizely',
+    'clicktale',
+    'mixpanel',
+    'zedo',
+    'clicksor',
+    'tiqcdn',
+];
