@@ -1,20 +1,10 @@
-import requests as req
 import os
-import json
-from datetime import datetime
 import sys
-from bs4 import BeautifulSoup
-import threading
-import asyncio
-import json
-from threading import Thread
-import time
 import shutil
-import os
-import glob
 
 os.chdir('E:/Projects/generate boilerplate/')
 current_dir = os.getcwd() + '/'
+
 # location paths
 paths = {
     'freelance': 'E:/Freelance/',
@@ -50,7 +40,6 @@ if lang_type == 'py':
             current_dir + 'templates/imports-py.template.txt', 'r').read()
         scraper_template = open(
             current_dir + 'templates/scraper-py.template.txt', 'r').read()
-        print(default_imports)
         path = paths[location] + project_name + '/'
         try:
             os.mkdir(path)
@@ -59,7 +48,20 @@ if lang_type == 'py':
         file = open(path + file_name + '.py',  'w+')
         file.write(f'{default_imports} \n\n{scraper_template}')
         print(f'[SUCCESS] GO TO {path}')
-else:
+    
+    if usage_type == 'general':
+        default_imports = open(current_dir + 'templates/imports-py.template.txt', 'r').read()
+        path = paths[location] + project_name + '/'
+        try:
+            os.mkdir(path)
+        except:
+            print(f"{path} already exist")
+        file = open(path + file_name + '.py',  'w+')
+        file.write(f'{default_imports} \n')
+        print(f'[SUCCESS] GO TO {path}')
+
+
+else: #nodejs
     if usage_type == 'scrape':
         default_imports = open(
             current_dir + 'templates/imports-nodejs.template.txt', 'r').read()
@@ -71,5 +73,6 @@ else:
         file = open(path + '/' + file_name + '.js',  'w+')
         file.write(f'{default_imports} \n\n{scraper_template}')
         print(f'[SUCCESS] {path}')
-        os.system("code "+ path)
+
+os.system(f'code "{path}"')
 
