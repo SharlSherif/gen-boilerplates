@@ -24,7 +24,7 @@ path = paths[location] + project_name
 
 if path not in names :
     for x in names:
-        if x.lower().strip() == project_name:
+        if x.lower().strip() == project_name.lower().strip():
             os.system(f'code "{path}"')
             exit(0)
     print("PROJECT NOT FOUND")
