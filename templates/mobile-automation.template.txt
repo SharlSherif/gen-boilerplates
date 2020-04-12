@@ -1,0 +1,13 @@
+const fs = require('fs');
+const wd = require('wd');
+const Client = require('ftp');
+const c = new Client();
+const lazy = require('lazy')
+const readline = require('readline');
+const config = require('./desiredCapabilities').options;
+const driver = wd.remote(config.local);
+const keycodes = JSON.parse(fs.readFileSync('./keyCodes.json', 'utf8'))
+
+driver.init(config.desiredCapabilities, async function (err) {
+    console.log("Hello World")
+})

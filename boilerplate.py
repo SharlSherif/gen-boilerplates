@@ -33,6 +33,7 @@ def copytree(src, path, symlinks=False, ignore=None):
         else:
             shutil.copy2(s, d)
 
+path = paths[location] + project_name
 
 if lang_type == 'py':
     if usage_type == 'scrape':
@@ -40,7 +41,7 @@ if lang_type == 'py':
             current_dir + 'templates/imports-py.template.txt', 'r').read()
         scraper_template = open(
             current_dir + 'templates/scraper-py.template.txt', 'r').read()
-        path = paths[location] + project_name + '/'
+        path = path + '/'
         try:
             os.mkdir(path)
         except:
@@ -51,7 +52,7 @@ if lang_type == 'py':
     
     if usage_type == 'general':
         default_imports = open(current_dir + 'templates/imports-py.template.txt', 'r').read()
-        path = paths[location] + project_name + '/'
+        path = path + '/'
         try:
             os.mkdir(path)
         except:
@@ -60,19 +61,52 @@ if lang_type == 'py':
         file.write(f'{default_imports} \n')
         print(f'[SUCCESS] GO TO {path}')
 
+if lang_type == 'random':
+    path = path + '/'
+    try:
+        os.mkdir(path)
+    except:
+        print(f"{path} already exist")
+    print(f'[SUCCESS] GO TO {path}')
 
-else: #nodejs
+if lang_type == 'nodejs': #nodejs
     if usage_type == 'scrape':
         default_imports = open(
             current_dir + 'templates/imports-nodejs.template.txt', 'r').read()
         scraper_template = open(
             current_dir + 'templates/scraper-nodejs.template.txt', 'r').read()
         # copy node_modules over to the project folder
-        path = paths[location] + project_name
         copytree(current_dir + 'templates/node_modules', path)
         file = open(path + '/' + file_name + '.js',  'w+')
         file.write(f'{default_imports} \n\n{scraper_template}')
         print(f'[SUCCESS] {path}')
+    
+    if usage_type == 'general':
+        default_imports = open(current_dir + 'templates/imports-nodejs.template.txt', 'r').read()
+        path = path + '/'
+        try:
+            os.mkdir(path)
+        except:
+            print(f"{path} already exist")
+        file = open(path + file_name + '.js',  'w+')
+        file.write(f'{default_imports} \n')
+        print(f'[SUCCESS] GO TO {path}')
+
+    if usage_type == 'mobile automation':
+        template = open(current_dir + 'templates/mobile-automation.template.txt', 'r').read()
+        path = path + '/'
+        try:
+            os.mkdir(path)
+        except:
+            print(f"{path} already exist")
+        # copy node_modules over to the project folder
+        copytree(current_dir + 'templates/node_modules - mobile automation', path)
+        shutil.copy(current_dir + 'templates/desiredCapabilities.js', path)
+        shutil.copy(current_dir + 'templates/keyCodes.json', path)
+        file = open(path + file_name + '.js',  'w+')
+        file.write(f'{template} \n')
+        print(f'[SUCCESS] GO TO {path}')
+
 
 os.system(f'code "{path}"')
 
