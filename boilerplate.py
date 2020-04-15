@@ -12,8 +12,18 @@ paths = {
 }
 
 # required args
+print('           nodejs')
+print('           py')
+print('           random')
 lang_type = input('Language: ')  # node, py
+if lang_type == 'random':
+    print("           You don't have to specify project type")
+else:
+    print('           scrape')
+    print('           mobile automation')
+    print('           general')
 usage_type = input('Project Type: ') # scrape
+
 location = input('Side or Freelance :') # freelance, side
 project_name = input('Project Name: ')
 file_name = input('Entry File Name (without extension): ')
